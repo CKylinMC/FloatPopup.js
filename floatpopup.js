@@ -72,6 +72,12 @@
             };
             return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
         }
+        static ShortID() {
+            var S4 = function() {
+               return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            };
+            return (S4()+S4()+S4()+S4());
+        }
     }
     class FloatPopup{
         static zIndex = 999000;
@@ -136,7 +142,7 @@
         }
 
         static prompt(title, content, placeholder = '输入...', btnoktxt = '确定') {
-            const inputid = _.GUID();
+            const inputid = 'CKP-'+_.ShortID();
             return new Promise(r => {
                 const fw = new FloatPopup();
                 fw.setTitle(title)
