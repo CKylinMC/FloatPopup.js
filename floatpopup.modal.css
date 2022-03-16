@@ -4,7 +4,7 @@
  * @author CKylinMC
  * @license GPLv3.0
  */
-:root{
+ :root{
     --page-background: white;
     --page-frontcolor: black;
     --highlight-background: white;
@@ -153,9 +153,9 @@
 }
 @keyframes ckfp-layer-in{
     from{
-        transform: scale(.95);
+        transform: scale(.95) translateY(-50%);
     }
     to{
-        transform: scale(1);
+        transform: scale(1) translateY(-50%);
     }
 }

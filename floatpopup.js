@@ -4,7 +4,7 @@
  * @author CKylinMC
  * @license GPLv3.0
  */
-(function () {
+ (function () {
     const domHelper = (tagName = 'div', options = {}) => {
         let el;
         if(options.from){
@@ -54,6 +54,7 @@
             }
         }
         if (options.append && options.append instanceof HTMLElement) options.append.appendChild(el);
+        if (options.insertAsFirstChild && options.insertAsFirstChild instanceof HTMLElement) options.insertAsFirstChild.insertAdjacentElement('afterbegin',el);
         if (options.init && options.init instanceof Function) options.init(el);
         if (options.initAsync && options.initAsync instanceof Function) {
             return options.initAsync(el).then(() => el);
@@ -97,7 +98,7 @@
             '--btn-hover-bg',
             '--btn-fg',
         ]
-        constructor(theme = FloatPopupTheme.defaultSchema){
+        constructor(theme = {}){
             this.theme = theme;
         }
         remove(k){
@@ -326,7 +327,7 @@
                 on:{
                     click: e=>this.hide()
                 },
-                append:this.dom.query('.ckfp-header')
+                insertAsFirstChild:this.dom.query('.ckfp-header')
             })
         }
         // setThemeColor() {
