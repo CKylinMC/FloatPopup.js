@@ -1,3 +1,9 @@
+/**
+ * FloatPopup.js
+ * @version 1.1
+ * @author CKylinMC
+ * @license GPLv3.0
+ */
 (function () {
     const domHelper = (tagName = 'div', options = {}) => {
         let el;
@@ -79,7 +85,45 @@
             return (S4()+S4()+S4()+S4());
         }
     }
+    class FloatPopupTheme{
+        static items = [
+            '--page-background',
+            '--page-frontcolor',
+            '--highlight-background',
+            '--highlight-frontcolor',
+            '--btn-border',
+            '--btn-hover-border',
+            '--btn-bg',
+            '--btn-hover-bg',
+            '--btn-fg',
+        ]
+        constructor(theme = FloatPopupTheme.defaultSchema){
+            this.theme = theme;
+        }
+        remove(k){
+            delete this.theme[k];
+        }
+        set(k,v){
+            if(FloatPopupTheme.items.includes(k))
+                this.theme[k] = v;
+        }
+        get(k, v=null) {
+            if (this.theme.hasOwnProperty(k)) return k[v];
+            return v;
+        }
+        getAll() {
+            return this.theme;
+        }
+        getAllAsString() {
+            let str = '';
+            for (const key of Object.keys(this.theme)) {
+                str += `${key}:${this.theme[key]};\n`;
+            }
+            return str;
+        }
+    }
     class FloatPopup{
+        static defaultTheme = new FloatPopupTheme;
         static zIndex = 999000;
         static getZIndex() {
             return FloatPopup.zIndex++;
@@ -186,6 +230,32 @@
             this.initDom();
             this.closeCallback = null;
         }
+        setTheme(theme){
+            if (theme instanceof FloatPopupTheme) {
+                this.theme = theme;
+                this.applyTheme();
+                return true;
+            }
+            return false;
+        }
+        getTheme(){
+            return this.theme;
+        }
+        applyTheme() {
+            this.container.querySelector(`style.ckfp-theme[ckfpinstanceid='${this.guid}']`)?.remove();
+            domHelper('style', {
+                append: this.container,
+                classnames: 'ckfp-theme',
+                attr: {
+                    'ckfpinstanceid': this.guid
+                },
+                html: `
+                    .ckfp-container[ckfpinstanceid='${this.guid}']{
+                        ${this.theme.getAllAsString()}
+                    }
+                `
+            });
+        }
         initDom() {
             if (this.container) {
                 if (this.dcontainerom.instance) {
@@ -234,6 +304,7 @@
                     instance: this,
                 }
             });
+            this.setTheme(FloatPopup.defaultTheme);
         }
         setCloseCallback(fn) {
             this.closeCallback = fn;
