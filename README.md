@@ -1,2 +1,4 @@
-# FloatPopup.js
-A simple float popup for web with no dependences
+# FloatWindow.js
+A simple float window for web with no dependences.
+
+`WIP`
