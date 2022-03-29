@@ -1,5 +1,5 @@
 /**
- * FloatPopup.js
+ * FloatWindow.js
  * @version 1.1
  * @author CKylinMC
  * @license GPLv3.0
@@ -86,7 +86,7 @@
             return (S4()+S4()+S4()+S4());
         }
     }
-    class FloatPopupTheme{
+    class FloatWindowTheme{
         static items = [
             '--page-background',
             '--page-frontcolor',
@@ -105,7 +105,7 @@
             delete this.theme[k];
         }
         set(k,v){
-            if(FloatPopupTheme.items.includes(k))
+            if(FloatWindowTheme.items.includes(k))
                 this.theme[k] = v;
         }
         get(k, v=null) {
@@ -123,17 +123,17 @@
             return str;
         }
     }
-    class FloatPopup{
-        static defaultTheme = new FloatPopupTheme;
+    class FloatWindow{
+        static defaultTheme = new FloatWindowTheme;
         static zIndex = 999000;
         static getZIndex() {
-            return FloatPopup.zIndex++;
+            return FloatWindow.zIndex++;
         }
         static lastInstance = null;
 
         static alert(title,content,btntxt='确定'){
             return new Promise(r => {
-                const fw = new FloatPopup();
+                const fw = new FloatWindow();
                 fw.setTitle(title)
                     .setCloseCallback(r)
                     .setContents(content)
@@ -155,7 +155,7 @@
 
         static confirm(title,content,btnoktxt='是',btnnotxt='否'){
             return new Promise(r => {
-                const fw = new FloatPopup();
+                const fw = new FloatWindow();
                 fw.setTitle(title)
                     .setCloseCallback(r)
                     .setContents(content)
@@ -189,7 +189,7 @@
         static prompt(title, content, placeholder = '输入...', btnoktxt = '确定') {
             const inputid = 'CKP-'+_.ShortID();
             return new Promise(r => {
-                const fw = new FloatPopup();
+                const fw = new FloatWindow();
                 fw.setTitle(title)
                     .setCloseCallback(r)
                     .setContents(content)
@@ -225,14 +225,14 @@
         }
 
         constructor() {
-            FloatPopup.lastInstance = this;
+            FloatWindow.lastInstance = this;
             this.guid = _.GUID();
             this.closeable = true;
             this.initDom();
             this.closeCallback = null;
         }
         setTheme(theme){
-            if (theme instanceof FloatPopupTheme) {
+            if (theme instanceof FloatWindowTheme) {
                 this.theme = theme;
                 this.applyTheme();
                 return true;
@@ -264,8 +264,8 @@
                 }
                 this.container.remove();
             }
-            const bwz = FloatPopup.getZIndex();
-            const domz = FloatPopup.getZIndex();
+            const bwz = FloatWindow.getZIndex();
+            const domz = FloatWindow.getZIndex();
             this.dom = domHelper('div', {
                 attr: {
                     'ckfpinstanceid': this.guid
@@ -305,7 +305,7 @@
                     instance: this,
                 }
             });
-            this.setTheme(FloatPopup.defaultTheme);
+            this.setTheme(FloatWindow.defaultTheme);
         }
         setCloseCallback(fn) {
             this.closeCallback = fn;
@@ -393,5 +393,5 @@
             return this;
         }
     }
-    window.FloatPopup = FloatPopup;
+    window.FloatWindow = FloatWindow;
 })();
